@@ -6,8 +6,14 @@ import App from './components/App';
 // Redux 관련 불러오기
 import { createStore } from 'redux';
 import reducers from './reducers';
+import { Provider } from 'react-redux';
 
 // 스토어 생성
 const store = createStore(reducers);
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(
+    <Provider store={store}>
+        <App />
+    </Provider>,
+    document.getElementById('root')
+);
