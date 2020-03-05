@@ -1,25 +1,41 @@
-import number from './number';
-import color from './color';
-import { combineReducers } from 'redux';
+import * as types from '../actions/ActionTypes';
 
-/*
-    서브 리듀서들을 하나로 합칩니다.
-    combineReducers 를 실행하고 나면, 나중에 store의 형태가 파라미터로 전달한 객체의 모양대로 만들어집니다.
-    지금의 경우:
-    {
-        numberData: {
-            number: 0
-        },
-        colorData: {
+// 초기 상태를 정의합니다.
+const initialState = {
+    counters: [
+        {
+            number: 0,
             color: 'black'
         }
+    ]
+}
+
+// 리듀서 함수를 정의합니다.
+function counter(state = initialState, action) {
+    // 레퍼런스 생성
+    const { counters } = state;
+
+    switch(action.type) {
+        // 카운터를 새로 추가합니다
+        case types.CREATE:
+            return {
+                counters: [
+                    ...counters,
+                    {
+                        color: action.color,
+                        number: 0
+                    }
+                ]
+            };
+        // slice 를 이용하여 맨 마지막 카운터를 제외시킵니다
+        case types.REMOVE:
+            return {
+                counters: counters.slice(0, counters.length - 1)
+            };
+        
+        default:
+            return state;
     }
-    로 만들어집니다.
-*/
+};
 
-const reducers = combineReducers({
-    numberData: number,
-    colorData: color
-});
-
-export default reducers;
+export default counter;
